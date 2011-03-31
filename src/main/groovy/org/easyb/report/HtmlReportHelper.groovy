@@ -1,13 +1,10 @@
 package org.easyb.report
 
-import org.easyb.listener.ResultsCollector
-import org.easyb.result.Result
-import groovy.text.SimpleTemplateEngine
-import org.easyb.util.BehaviorStepType
 import org.easyb.listener.ResultsReporter
+import org.easyb.result.Result
+import org.easyb.util.BehaviorStepType
 
 class HtmlReportHelper {
-
     private HtmlReportHelper() {
     }
 
@@ -83,31 +80,6 @@ class HtmlReportHelper {
         return formattedElement
     }
 
-    static writeListDetails(ResultsReporter results, BufferedWriter reportWriter, String templateFilename) {
-        InputStream genericListTemplateInputStream = HtmlReportHelper.class.getClassLoader().getResourceAsStream("reports/${templateFilename}");
-        def templateBinding = ["results": results]
-        def templateEngine = new SimpleTemplateEngine()
-        def reportTemplate = templateEngine.createTemplate(genericListTemplateInputStream.newReader()).make(templateBinding)
-        reportTemplate.writeTo(reportWriter)
-
-    }
-
-    static writeStoriesList(ResultsReporter results, BufferedWriter reportWriter) {
-        writeListDetails(results, reportWriter, "easyb_report_stories_list.tmpl")
-    }
-
-    static writeSpecificationsList(ResultsReporter results, BufferedWriter reportWriter) {
-        writeListDetails(results, reportWriter, "easyb_report_specifications_list.tmpl")
-    }
-
-    static writeSpecificationsListPlain(ResultsReporter results, BufferedWriter reportWriter) {
-        writeListDetails(results, reportWriter, "easyb_report_specifications_list_plain.tmpl")
-    }
-
-    static writeStoriesListPlain(ResultsReporter results, BufferedWriter reportWriter) {
-        writeListDetails(results, reportWriter, "easyb_report_stories_list_plain.tmpl")
-    }
-
     static String formatHtmlReportElement(results, behaviourStepType) {
         def html = ''
         results.genesisStep.getChildrenOfType(behaviourStepType).each {child ->
@@ -139,6 +111,4 @@ class HtmlReportHelper {
         }
         return plainElement
     }
-
-
 }
